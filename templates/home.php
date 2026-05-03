@@ -1,18 +1,6 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Accueil</title>
-</head>
-<body>
-    <header>
-        <h1>Touche pas au klaxon</h1>
-        <div>
-            <p>Connexion</p>
-        </div>
-    </header>
+<?php include 'header.php'; ?>
     <main>
+        <!-- Formation du Tableau de bord -->
         <table>
             <caption>Pour obtenir plus d'informations sur un trajet, veuillez vous connecter</caption>
             <thead>
@@ -24,10 +12,16 @@
                     <th>Places</th>
                 </tr>
             </thead>
+            <tbody>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
         </table>
     </main>
-    <footer>
 
-    </footer>
-</body>
-</html>
+<?php include 'footer.php'; ?>
