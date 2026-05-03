@@ -1,4 +1,4 @@
-    <footer>
+    <footer> 
         &copy; 2024 - CENEF - MVC PHP
     </footer>
 </body>
