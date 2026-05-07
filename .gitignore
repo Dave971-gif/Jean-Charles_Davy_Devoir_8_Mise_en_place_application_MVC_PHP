@@ -1,2 +1,4 @@
 node_modules/
 dist/
+/vendor/
+composer.phargit rm -rf --cached vendor

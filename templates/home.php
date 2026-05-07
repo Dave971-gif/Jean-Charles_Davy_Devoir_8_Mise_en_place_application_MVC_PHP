@@ -3,6 +3,7 @@
         <!-- Formation du Tableau de bord -->
         <table>
             <caption>Pour obtenir plus d'informations sur un trajet, veuillez vous connecter</caption>
+            
             <thead>
                 <tr>
                     <th>Départ</th>
