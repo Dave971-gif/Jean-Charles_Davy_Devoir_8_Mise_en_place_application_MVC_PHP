@@ -8,29 +8,31 @@
                 <tr>
                     <th>Départ</th>
                     <th>Date</th>
+                    <th>Heure</th>
                     <th>Destination</th>
                     <th>Date</th>
+                    <th>Heure</th>
                     <th>Places</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
+                <?php if (isset($trajets) && !empty($trajets)): ?>
+                    <?php foreach ($trajets as $trajet): ?>
+                        <tr>
+                            <td><?php echo $trajet['depart']; ?></td>
+                            <td><?php echo $trajet['depart_date']; ?></td>
+                            <td><?php echo $trajet['depart_heure']; ?></td>
+                            <td><?php echo $trajet['destination']; ?></td>
+                            <td><?php echo $trajet['destination_date']; ?></td>
+                            <td><?php echo $trajet['destination_heure']; ?></td>
+                            <td><?php echo $trajet['places']; ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <tr><td colspan="4">Aucun trajet disponible pour le moment.</td></tr>
+                <?php endif; ?>
             </tbody>
         </table>
-        <h3>Test de récupération des agences :</h3>
-        <ul>
-            <?php if (isset($agences) && !empty($agences)): ?>
-                <?php foreach ($agences as $agence): ?>
-                    <li><?php echo $agence['nom']; ?></li>
-                <?php endforeach; ?>
-            <?php endif; ?>
-        </ul>
     </main>
 
 <?php include 'footer.php'; ?>
