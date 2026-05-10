@@ -2,15 +2,34 @@
 
 namespace app\controller;
 
+use core\Database;
+
 class HomeController {
+
     public function index() {
-        $db = \core\Database::getConnection(); // 1. Connexion to the database
+        // Initialising the visitor's role, defaulting to 'visitor' if not set
+        $role = $_SESSION['role'] ?? 'visitor';
+        $db = Database::getConnection(); // Connection to database
+        
+        // Initialising variables to pass to the view
+        $trajets = [];
+        $users = [];
+        $agences = [];
 
-        // 2. Queries to retrieve journey data
-        $query = $db->query("SELECT * FROM journey");
-        $trajets = $query->fetchAll();
+        // Fetching data based on the user's role
+        if ($role === 'admin') { 
+            $trajets = $db->query("SELECT * FROM journey")->fetchAll();
+            $users = $db->query("SELECT * FROM users")->fetchAll();
+            $agences = $db->query("SELECT * FROM agencies")->fetchAll();
+        } 
+        elseif ($role === 'user') {
+            $trajets = $db->query("SELECT * FROM journey WHERE places > 0")->fetchAll();
+        } 
+        else {
+            $trajets = $db->query("SELECT * FROM journey WHERE places > 0 AND depart_date >= CURDATE()")->fetchAll();
+        }
 
-        // 3. Include the view to display the data
+        // On inclut la vue qui va dispatcher l'affichage
         include __DIR__ . '/../../templates/home.php';
     }
 }

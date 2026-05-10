@@ -11,6 +11,8 @@
     <header>
         <h1>Touche pas au klaxon</h1>
         <div>
-            <p>Connexion</p>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#loginModal">
+                <a href="/routeur/login.php" class="text-white text-decoration-none">Connexion</a>
+            </button>
         </div>
     </header>
