@@ -1,9 +1,10 @@
 <?php include 'header.php'; ?>
     <main>
+        // -------- ADMIN ---------- //
         <?php if (isset($role) && $role === 'admin'): ?>
             <h2>Tableau de bord Administrateur</h2>
             
-            <h3>Liste des Utilisateurs</h3>
+            <h3 id="utilisateurs">Liste des Utilisateurs</h3>
             <ul>
                 <?php if (isset($users) && !empty($users)): ?>
                     <?php foreach ($users as $user): ?>
@@ -18,7 +19,7 @@
                 <?php endif; ?>
             </ul>
 
-            <h3>Gestion des Agences</h3>
+            <h3 id="agences">Gestion des Agences</h3>
             <a href="create_agence.php">Créer une nouvelle agence</a>
             <ul>
                 <?php if (isset($agences) && !empty($agences)): ?>
@@ -31,8 +32,8 @@
                     <?php endforeach; ?>
                 <?php endif; ?>
             </ul>
-
-            <h3>Gestion des Trajets</h3>
+            
+            <h3 id="trajets">Gestion des Trajets</h3>
             <ul>
                 <?php if (isset($trajets) && !empty($trajets)): ?>
                     <?php foreach ($trajets as $trajet): ?>
@@ -60,6 +61,8 @@
                     <?php endforeach; ?>
                 <?php endif; ?>
             </ul>
+
+            //---------- USER -----------//
         <?php elseif (isset($role) && $role === 'user'): ?>
             <h2>Bienvenue sur votre tableau de bord</h2>
             <p>Voici les trajets disponibles pour vous :</p>
@@ -89,11 +92,14 @@
                     <?php endif; ?>
                 </tbody>
             </table>
+
+            //--------- GUEST -----------//
         <?php else : ?>
             <h2>Bienvenue sur le tableau de bord de Touche pas mon Klaxon</h2>
-            <p>Voici la liste des trajets disponibles :</p>
+            <h3>Voici la liste des trajets disponibles :</h3>
+
+            <p>Pour obtenir plus d'informations sur un trajet, veuillez vous connecter.</p>
             <table>
-                <caption>Pour obtenir plus d'informations sur un trajet, veuillez vous connecter</caption>
                 
                 <thead>
                     <tr>

@@ -9,10 +9,30 @@
 </head>
 <body>
     <header>
-        <h1>Touche pas au klaxon</h1>
-        <div>
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#loginModal">
-                <a href="/routeur/login.php" class="text-white text-decoration-none">Connexion</a>
-            </button>
-        </div>
+        <nav>
+            <h1>Touche pas au klaxon</h1>
+            <div>
+                //---------- ADMIN ----------
+                <?php if (isset($role) && $role === 'admin'): ?>
+                    <a href="index.php#utilisateurs" class="btn btn-outline-light">Utilisateurs</a>
+                    <a href="index.php#agences" class="btn btn-outline-light">Agences</a>
+                    <a href="index.php#trajets" class="btn btn-outline-light">Trajets</a>
+
+                //---------- USER ---------- 
+                <?php elseif (isset($role) && $role === 'user'): ?>
+                    <a href="home.php" class="btn btn-outline-light">Créer un trajet</a>
+                    <p>Bonjour, <?php echo isset($_SESSION['nom']) ? $_SESSION['nom'] : 'Utilisateur'; ?>!</p>
+                
+                //--------- GUEST ---------- 
+                    <?php else : ?>
+                        <a href="home.php" class="btn btn-outline-light">Voir les trajets</a>
+                <?php endif; ?>
+
+                <?php if(isset($_SESSION['role'])): ?>
+                        <a href="home.php" class="btn btn-danger">Déconnexion</a>
+                    <?php else: ?>
+                        <a href="../routeur/login.php" class="btn btn-primary">Connexion</a>
+                <?php endif; ?>
+            </div>
+        </nav>
     </header>
