@@ -8,30 +8,44 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script> 
 </head>
 <body>
+    
+    <?php if (isset($_SESSION['flash'])): ?>
+        <div class="alert alert-success">
+            <?php 
+                echo $_SESSION['flash']; 
+                unset($_SESSION['flash']); // C'est CETTE LIGNE qui fait disparaître le message au prochain clic
+            ?>
+        </div>
+    <?php endif; ?>
+    
     <header>
         <nav>
-            <h1>Touche pas au klaxon</h1>
             <div>
-                //---------- ADMIN ----------
+                <!-- ---------- ADMIN ---------- -->
                 <?php if (isset($role) && $role === 'admin'): ?>
-                    <a href="index.php#utilisateurs" class="btn btn-outline-light">Utilisateurs</a>
-                    <a href="index.php#agences" class="btn btn-outline-light">Agences</a>
-                    <a href="index.php#trajets" class="btn btn-outline-light">Trajets</a>
-
-                //---------- USER ---------- 
-                <?php elseif (isset($role) && $role === 'user'): ?>
-                    <a href="home.php" class="btn btn-outline-light">Créer un trajet</a>
-                    <p>Bonjour, <?php echo isset($_SESSION['nom']) ? $_SESSION['nom'] : 'Utilisateur'; ?>!</p>
+                    <h1><a href="index.php">Touche pas au klaxon</a></h1>
+                    <a href="index.php#utilisateurs" class="btn ">Utilisateurs</a>
+                    <a href="index.php#agences" class="btn ">Agences</a>
+                    <a href="index.php#trajets" class="btn ">Trajets</a>
+                    
+                    <p>Bonjour, <?php echo $_SESSION['prenom'] ?? 'Administrateur'; ?> !</p>
                 
-                //--------- GUEST ---------- 
-                    <?php else : ?>
-                        <a href="home.php" class="btn btn-outline-light">Voir les trajets</a>
+                    <!-- ---------- USER ---------- -->
+                <?php elseif (isset($role) && $role === 'user'): ?>
+                    <h1>Touche pas au klaxon</h1>
+                    <a href="templates/journey.php" class="btn">Créer un trajet</a>
+                    <p>Bonjour, <?php echo $_SESSION['prenom'] ?? 'Utilisateur'; ?>!</p>
+                
+                         
+                    <?php else : ?> 
+                        <!-- ---------- GUEST ---------- -->
+                        <h1>Touche pas au klaxon</h1>
                 <?php endif; ?>
 
                 <?php if(isset($_SESSION['role'])): ?>
-                        <a href="home.php" class="btn btn-danger">Déconnexion</a>
+                        <a href="templates/home.php" class="btn btn-danger">Déconnexion</a>
                     <?php else: ?>
-                        <a href="../routeur/login.php" class="btn btn-primary">Connexion</a>
+                        <a href="login.php" class="btn btn-primary">Connexion</a>
                 <?php endif; ?>
             </div>
         </nav>

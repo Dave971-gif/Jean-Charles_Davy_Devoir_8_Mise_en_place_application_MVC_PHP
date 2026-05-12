@@ -1,21 +1,33 @@
 <?php include 'header.php'; ?>
     <main>
-        // -------- ADMIN ---------- //
-        <?php if (isset($role) && $role === 'admin'): ?>
+        <!-- ---------- ADMIN ---------- --> 
+         
+        <?php if (isset($role) && $role === 'admin'): ?> 
             <h2>Tableau de bord Administrateur</h2>
             
             <h3 id="utilisateurs">Liste des Utilisateurs</h3>
             <ul>
                 <?php if (isset($users) && !empty($users)): ?>
-                    <?php foreach ($users as $user): ?>
-                        <li>
-                            <?php echo $user['nom']; ?> ||
-                            <?php echo $user['prenom']; ?> ||
-                            <?php echo $user['contact']; ?> ||
-                            <?php echo $user['email']; ?> ||
-                            <?php echo $user['role']; ?>
-                        </li>
-                    <?php endforeach; ?>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Nom</th>
+                                <th>Prénom</th>
+                                <th>Contact</th>
+                                <th>Email</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($users as $user): ?>
+                                <tr>
+                                    <td><?php echo $user['nom']; ?></td>
+                                    <td><?php echo $user['prenom']; ?></td>
+                                    <td><?php echo $user['contact']; ?></td>
+                                    <td><?php echo $user['email']; ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
                 <?php endif; ?>
             </ul>
 
@@ -36,9 +48,9 @@
             <h3 id="trajets">Gestion des Trajets</h3>
             <ul>
                 <?php if (isset($trajets) && !empty($trajets)): ?>
-                    <?php foreach ($trajets as $trajet): ?>
-                        <table>
-                            <thead>
+                    <table>
+                        <thead>
+                            <?php foreach ($trajets as $trajet): ?>
                                 <tr>
                                     <th>Agence de départ</th>
                                     <th>Date de départ</th>
@@ -47,22 +59,23 @@
                                     <th>Places disponibles</th>
                                     <th>Actions</th>
                                 </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><?php echo $trajet['depart']; ?> </td>
-                                    <td><?php echo $trajet['depart_date']; ?> </td>
-                                    <td><?php echo $trajet['destination']; ?> </td>
-                                    <td><?php echo $trajet['destination_date']; ?> </td>
-                                    <td><?php echo $trajet['places']; ?> </td>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><?php echo $trajet['depart']; ?> </td>
+                                <td><?php echo $trajet['depart_date']; ?> </td>
+                                <td><?php echo $trajet['destination']; ?> </td>
+                                <td><?php echo $trajet['destination_date']; ?> </td>
+                                <td><?php echo $trajet['places']; ?> </td>
                                 <td><a href="delete_trajet.php?id=<?php echo $trajet['id']; ?>">Supprimer le trajet</a></td>
                             </tr>
-                        </table>
-                    <?php endforeach; ?>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
                 <?php endif; ?>
             </ul>
 
-            //---------- USER -----------//
+            <!-- ---------- USER ----------- -->
         <?php elseif (isset($role) && $role === 'user'): ?>
             <h2>Bienvenue sur votre tableau de bord</h2>
             <p>Voici les trajets disponibles pour vous :</p>
@@ -92,15 +105,15 @@
                     <?php endif; ?>
                 </tbody>
             </table>
-
-            //--------- GUEST -----------//
+            
+            <!-- ------- GUEST ----------- -->
+             
         <?php else : ?>
             <h2>Bienvenue sur le tableau de bord de Touche pas mon Klaxon</h2>
             <h3>Voici la liste des trajets disponibles :</h3>
 
             <p>Pour obtenir plus d'informations sur un trajet, veuillez vous connecter.</p>
             <table>
-                
                 <thead>
                     <tr>
                         <th>Agence de départ</th>

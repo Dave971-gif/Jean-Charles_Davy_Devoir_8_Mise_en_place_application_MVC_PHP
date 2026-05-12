@@ -29,7 +29,7 @@ class HomeController {
             $trajets = $db->query("SELECT * FROM journey WHERE places > 0 AND depart_date >= CURDATE()")->fetchAll();
         }
 
-        // On inclut la vue qui va dispatcher l'affichage
+        // View rendering
         include __DIR__ . '/../../templates/home.php';
     }
 }
