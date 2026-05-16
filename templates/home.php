@@ -87,6 +87,7 @@
                         <th>Agence d'arrivée</th>
                         <th>Date d'arrivée</th>
                         <th>Places disponibles</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -98,7 +99,45 @@
                                 <td><?php echo $trajet['destination']; ?></td>
                                 <td><?php echo $trajet['destination_date']; ?></td>
                                 <td><?php echo $trajet['places']; ?></td>
+                                <td>
+                                    <a href="#" data-bs-toggle="modal" data-bs-target="#modalTrajet<?= $trajet['id'] ?>">
+                                        <i class="bi bi-eye"></i> 
+                                    </a>
+
+                                    <?php 
+                                    // Verifying if the user is the owner of the journey 
+                                    if ((int)$_SESSION['user_id'] === (int)$trajet['user_id']): 
+                                    ?>
+                                        <a href="templates/journey.php?id=<?= $trajet['id'] ?>" class="ms-2 text-warning">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </a>
+                                        <a href="templates/delete_journey.php?id=<?= $trajet['id'] ?>" class="ms-2 text-danger" 
+                                        onclick="return confirm('Supprimer ce trajet ?')">
+                                            <i class="bi bi-trash"></i>
+                                        </a>
+                                    <?php endif; ?>
+                                </td>
                             </tr>
+                            <div class="modal fade" id="modalTrajet<?= $trajet['id'] ?>" tabindex="-1" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Détails du trajet</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p><strong>Auteur :</strong> <?= $trajet['prenom'] . ' ' . $trajet['nom'] ?></p>
+                                            <p><strong>Téléphone :</strong> <?= $trajet['contact'] ?></p>
+                                            <p><strong>Email :</strong> <?= $trajet['email'] ?></p>
+                                            <hr>
+                                            <p><strong>Nombre total de places :</strong> <?= $trajet['places'] ?></p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         <?php endforeach; ?>
                     <?php else: ?>
                         <tr><td colspan="5">Aucun trajet disponible pour le moment.</td></tr>
