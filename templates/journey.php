@@ -1,6 +1,4 @@
 <?php
-session_start();
-
 // Autoloader and db charging
 require_once __DIR__ . '/../vendor/autoload.php';
 use core\Database;

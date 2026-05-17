@@ -1,41 +1,28 @@
 <?php
-session_start();
-require_once __DIR__ . '/vendor/autoload.php';
+session_start();  
 
-use Symfony\Component\Routing\Matcher\UrlMatcher;
-use Symfony\Component\Routing\RequestContext;
-use Symfony\Component\Routing\RouteCollection;
-use Symfony\Component\Routing\Route;
-use Symfony\Component\Routing\Exception\ResourceNotFoundException;
-use Symfony\Component\HttpFoundation\Request;
-use app\controller\HomeController;
+// Logout handling: If the URL contains ?action=logout, we log the user out
+if (isset($_GET['action']) && $_GET['action'] === 'logout') {
+    // Emptying the session array
+    $_SESSION = [];
 
-// 1. Routes Configs
-$routes = new RouteCollection();
+    // Destroying the session cookie if it exists
+    if (ini_get("session.use_cookies")) {
+        $params = session_get_cookie_params();
+        setcookie(session_name(), '', time() - 42000,
+            $params["path"], $params["domain"],
+            $params["secure"], $params["httponly"]
+        );
+    }
 
-// URL Source "/" must display the home.php content
-$routes->add('home', new Route('/', ['_controller' => [HomeController::class, 'index']]));
-
-// 2. Analyze the current URL and match it to a route
-$context = new RequestContext();
-$context->fromRequest(Request::createFromGlobals());
-$matcher = new UrlMatcher($routes, $context);
-
-try {
-    $parameters = $matcher->match($context->getPathInfo());
+    // Destroying the session
+    session_destroy();
     
-    // Getting the controller and method to call from the route parameters
-    list($controllerClass, $method) = $parameters['_controller'];
-    
-    $controller = new $controllerClass();
-    
-    // Calling the method
-    $controller->$method();
-
-} catch (ResourceNotFoundException $e) {
-    // If the user types a URL that does not exist
-    header("HTTP/1.0 404 Not Found");
-    echo "Page introuvable.";
+    // Redirecting to the home page after logout
+    header("Location: ./");
+    exit;
 }
 
-?>
+require_once __DIR__ . '/vendor/autoload.php';
+
+require_once __DIR__ . '/routeur/Router.php';

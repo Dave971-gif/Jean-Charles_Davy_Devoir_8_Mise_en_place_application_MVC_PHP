@@ -1,9 +1,8 @@
 <?php
-session_start();
 
 // If the user tries to access this page without going through the login step, we redirect them to the login page
 if (!isset($_SESSION['temp_user'])) {
-    header('Location: login.php');
+    header('Location: ./login');
     exit();
 }
 
@@ -30,15 +29,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Cleaning up the temporary user data used for this step
         unset($_SESSION['temp_user']);
 
-        header('Location: ../index.php');
+        header('Location: ./'); // Redirecting to the home page after successful login
         exit();
     } else {
         $error = "Mot de passe incorrect.";
     }
 }
 ?>
-
-<?php include '../templates/header.php'; ?>
 
 <main class="container mt-5">
     <h1>Connexion</h1>
@@ -50,12 +47,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <input type="password" name="password" class="form-control" placeholder="Votre mot de passe" required autofocus>
         </div>
         <button type="submit" class="btn btn-primary">Se connecter</button>
-        <a href="password.php" class="btn btn-link">Mot de passe oublié ?</a>
+        <a href="./password" class="btn btn-link">Mot de passe oublié ?</a>
     </form>
 
     <?php if ($error): ?>
         <p class="text-danger mt-3 fw-bold"><?php echo $error; ?></p>
     <?php endif; ?>
 </main>
-
-<?php include '../templates/footer.php'; ?>

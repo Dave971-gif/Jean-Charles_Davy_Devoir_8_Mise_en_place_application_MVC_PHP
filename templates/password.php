@@ -1,11 +1,10 @@
 <?php
-session_start();
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
 // If the user tries to access this page without going through the login step, we redirect them to the login page
 if (!isset($_SESSION['temp_user'])) {
-    header('Location: login.php');
+    header('Location: ./login');
     exit();
 }
 
@@ -51,13 +50,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         $_SESSION['flash'] = "Votre mot de passe a été enregistré avec succès !";
 
-        header('Location: ../index.php');
+        header('Location: ./'); // Redirecting to the home page after successful password creation
         exit();
     }
 }
 ?>
-
-<?php include '../templates/header.php'; ?>
 
 <main class="container mt-5">
     <h1>Finaliser la connexion</h1>
@@ -77,5 +74,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <p class="text-danger mt-3 fw-bold"><?php echo $error; ?></p>
     <?php endif; ?>
 </main>
-
-<?php include '../templates/footer.php'; ?>

@@ -1,6 +1,5 @@
 <?php
 
-session_start();
 require_once __DIR__ . '/../core/Database.php';
 
 
@@ -22,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') { // Checking if the form is submitte
         // Verifying if the user already has a password set (first access or not)
         if (!empty($user['password'])) {
             // Redirecting to the password verification page if the user already has a password (not first access)
-            header('Location: check_password.php'); 
+            header('Location: ./check_password'); 
         } else {
             // Redirecting to the password creation page if it's the user's first access (no password set yet)
             header('Location: password.php');
@@ -35,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') { // Checking if the form is submitte
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
