@@ -6,7 +6,6 @@ use PDO;
 class ActionController {
     private PDO $db;
 
-    // Le constructeur récupère la connexion BDD automatiquement
     public function __construct() {
         // Connection to the database using PDO, with error handling
         try {
@@ -49,7 +48,7 @@ class ActionController {
                 $stmt->execute(['nom' => $nom, 'id' => $id]);
                 
                 $_SESSION['flash'] = "L'agence a bien été modifiée !";
-                header('Location: ./');
+                header('Location: /');
                 exit;
             }
         }
@@ -70,28 +69,42 @@ class ActionController {
     }
 
     public function deleteAgency(int $id) {
-        // Suppression directe en BDD
         $stmt = $this->db->prepare("DELETE FROM agencies WHERE id = :id");
         $stmt->execute(['id' => $id]);
         
         $_SESSION['flash'] = "L'agence a été supprimée.";
-        header('Location: ./');
+        header('Location: /');
         exit;
     }
+
 
     // ==========================================
     //          JOURNEY ACTIONS (CRUD)
     // ==========================================
 
-    public function createJourney() {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $depart = $_POST['depart'] ?? '';
-            $depart_date = $_POST['depart_date'] ?? '';
-            $destination = $_POST['destination'] ?? '';
-            $destination_date = $_POST['destination_date'] ?? '';
-            $places = $_POST['places'] ?? 0;
-            $user_id = $_SESSION['user_id'] ?? null; // Assuming the user must be logged in to create a journey
+    public function createJourney(): void {
+        if (!isset($_SESSION['user_id'])) {
+            header('Location: /');
+            exit();
+        }
 
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+            $depart = $_POST['depart'] ?? '';
+            $depart_date = $_POST['depart_date'] ?? ''; 
+            $destination = $_POST['destination'] ?? '';
+            $destination_date = $_POST['destination_date'] ?? ''; 
+            $places = $_POST['places'] ?? 1;
+            $user_id = $_SESSION['user_id'] ?? null;
+
+            if (strtotime($depart_date) < time()) {
+                die("Erreur : La date de départ ne peut pas être dans le passé.");
+            }
+            
+            if (strtotime($destination_date) < strtotime($depart_date)) {
+                die("Erreur : La date d'arrivée ne peut pas être antérieure à la date de départ.");
+            }
+            
             if (!empty($depart) && !empty($destination)) {
                 $stmt = $this->db->prepare("INSERT INTO journey (depart, depart_date, destination, destination_date, places, user_id) VALUES (:depart, :depart_date, :destination, :destination_date, :places, :user_id)");
                 $stmt->execute([
@@ -104,23 +117,37 @@ class ActionController {
                 ]);
 
                 $_SESSION['flash'] = "Votre trajet a été publié !";
-                header('Location: ./');
+                header('Location: /');
                 exit;
             }
         }
 
-        // If GET : we display the creation form
+        $id = null;
+        $trajet = null;
         include __DIR__ . '/../../templates/journey.php';
         exit;
     }
 
-    public function editJourney(int $id) {
+    public function editJourney(int $id): void {
+        if (!isset($_SESSION['user_id'])) {
+            header('Location: /');
+            exit();
+        }
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $depart = $_POST['depart'] ?? '';
             $depart_date = $_POST['depart_date'] ?? '';
             $destination = $_POST['destination'] ?? '';
             $destination_date = $_POST['destination_date'] ?? '';
-            $places = $_POST['places'] ?? 0;
+            $places = $_POST['places'] ?? 1;
+
+            if (strtotime($depart_date) < time()) {
+            die("Erreur : La date de départ ne peut pas être dans le passé.");
+            }
+
+            if (strtotime($destination_date) < strtotime($depart_date)) {
+                die("Erreur : La date d'arrivée ne peut pas être antérieure à la date de départ.");
+            }
 
             $stmt = $this->db->prepare("UPDATE journey SET depart = :depart, depart_date = :depart_date, destination = :destination, destination_date = :destination_date, places = :places WHERE id = :id");
             $stmt->execute([
@@ -133,32 +160,39 @@ class ActionController {
             ]);
 
             $_SESSION['flash'] = "Le trajet a été mis à jour avec succès.";
-            header('Location: ./');
+            header('Location: /');
             exit;
         }
 
-        // Si GET : on récupère le trajet existant pour alimenter les champs de la vue
+        // If GET request, we fetch the existing journey data to pre-fill the form
         $stmt = $this->db->prepare("SELECT * FROM journey WHERE id = :id");
         $stmt->execute(['id' => $id]);
         $trajet = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if (!$trajet) {
             $_SESSION['flash'] = "Trajet introuvable.";
-            header('Location: ./');
+            header('Location: /');
             exit;
+        }
+
+        // Security check: only the owner of the journey or an admin can edit it
+        if ($trajet['user_id'] != $_SESSION['user_id'] && $_SESSION['role'] !== 'admin') {
+            $_SESSION['flash'] = "Vous n'avez pas l'autorisation de modifier ce trajet.";
+            header('Location: /');
+            exit();
         }
 
         include __DIR__ . '/../../templates/journey.php';
         exit;
     }
 
-    public function deleteJourney(int $id) {
-        // Suppression directe en BDD
+    public function deleteJourney(int $id): void {
         $stmt = $this->db->prepare("DELETE FROM journey WHERE id = :id");
         $stmt->execute(['id' => $id]);
 
         $_SESSION['flash'] = "Le trajet a été supprimé.";
-        header('Location: ./');
+        header('Location: /');
         exit;
     }
 }
+?>

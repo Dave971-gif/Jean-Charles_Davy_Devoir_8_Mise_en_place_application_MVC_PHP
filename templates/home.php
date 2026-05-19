@@ -32,14 +32,14 @@
 
             <h3 id="agences">Gestion des Agences</h3>
 
-            <a href="./create_agency">Créer une nouvelle agence</a>
+            <a href="./agence">Créer une nouvelle agence</a>
             <ul>
                 <?php if (isset($agences) && !empty($agences)): ?>
                     <?php foreach ($agences as $agence): ?>
                         <li>
                             <?php echo $agence['nom']; ?> - 
-                            <a href="./agency/edit?id=<?php echo $agence['id']; ?>" class="ms-2 text-warning"><i class="bi bi-pencil-square"></i></a> 
-                            <a href="./agency/delete?id=<?php echo $agence['id']; ?>" class="ms-2 text-danger"><i class="bi bi-trash"></i></a>
+                            <a href="./agence/edit?id=<?php echo $agence['id']; ?>" class="ms-2 text-warning"><i class="bi bi-pencil-square"></i></a> 
+                            <a href="./agence/delete?id=<?php echo $agence['id']; ?>" class="ms-2 text-danger"><i class="bi bi-trash"></i></a>
                         </li>
                     <?php endforeach; ?>
                 <?php endif; ?>
@@ -63,9 +63,9 @@
                         <?php foreach ($admin_trajets as $trajet): ?>
                             <tr>
                                 <td><?php echo $trajet['depart']; ?> </td>
-                                <td><?php echo $trajet['depart_date']; ?> </td>
+                                <td><?= date('d/m/Y', strtotime($trajet['depart_date'])) ?></td>
                                 <td><?php echo $trajet['destination']; ?> </td>
-                                <td><?php echo $trajet['destination_date']; ?> </td>
+                                <td><?= date('d/m/Y', strtotime($trajet['destination_date'])) ?></td>
                                 <td><?php echo $trajet['places']; ?> </td>
                                 <td>
                                     <a href="./delete_journey?id=<?= $trajet['id'] ?>" class="ms-2 text-danger"
@@ -99,9 +99,9 @@
                         <?php foreach ($user_trajets as $trajet): ?>
                             <tr>
                                 <td><?php echo $trajet['depart']; ?></td>
-                                <td><?php echo $trajet['depart_date']; ?></td>
+                                <td><?= date('d/m/Y', strtotime($trajet['depart_date'])) ?></td>
                                 <td><?php echo $trajet['destination']; ?></td>
-                                <td><?php echo $trajet['destination_date']; ?></td>
+                                <td><?= date('d/m/Y', strtotime($trajet['destination_date'])) ?></td>
                                 <td><?php echo $trajet['places']; ?></td>
                                 <td>
                                     <a href="#" data-bs-toggle="modal" data-bs-target="#modalTrajet<?= $trajet['id'] ?>">
@@ -112,10 +112,10 @@
                                     // Verifying if the user is the owner of the journey 
                                     if ((int)$_SESSION['user_id'] === (int)$trajet['user_id']): 
                                     ?>
-                                        <a href="/journey/<?= $trajet['id'] ?>/edit" class="ms-2 text-warning">
+                                        <a href="journey/<?= $trajet['id'] ?>/edit" class="ms-2 text-warning">
                                             <i class="bi bi-pencil-square"></i>
                                         </a>
-                                        <a href="/journey/<?= $trajet['id'] ?>/delete" class="ms-2 text-danger" 
+                                        <a href="journey/<?= $trajet['id'] ?>/delete" class="ms-2 text-danger" 
                                         onclick="return confirm('Supprimer ce trajet ?')">
                                             <i class="bi bi-trash"></i>
                                         </a>
@@ -130,19 +130,16 @@
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
-                                            <?php if (isset($users) && !empty($users)): ?>
-                                                <?php foreach ($users as $user): ?>
-                                                    <?php if ($user['id'] === $trajet['user_id']): ?>
-                                                        <p><strong>Auteur :</strong> <?= $user['prenom'] . ' ' . $user['nom'] ?></p>
-                                                        <p><strong>Téléphone :</strong> <?= $user['contact'] ?></p>
-                                                        <p><strong>Email :</strong> <?= $user['email'] ?></p>
-                                                    <?php endif; ?>
-                                                <?php endforeach; ?>
+                                            <?php if (!empty($trajet['user_id'])): ?>
+                                                <p><strong>Auteur : </strong><?= htmlspecialchars($trajet['prenom'] . ' ' . $trajet['nom']) ?></p>
+                                                <p><strong>Téléphone : </strong><a href="tel:<?= htmlspecialchars($trajet['contact']) ?>"><?= htmlspecialchars($trajet['contact']) ?></a></p>
+                                                <p><strong>Email : </strong><a href="mailto:<?= htmlspecialchars($trajet['email']) ?>"><?= htmlspecialchars($trajet['email']) ?></a></p>
                                             <?php else: ?>
-                                                <p><strong>Auteur :</strong> Inconnu</p>
+                                                <p><strong>Auteur : </strong>Inconnu</p>
                                             <?php endif; ?>
+                                            
                                             <hr>
-                                            <p><strong>Nombre total de places :</strong> <?= $trajet['places'] ?></p>
+                                            <p><strong>Nombre total de places : </strong><?= htmlspecialchars($trajet['places']) ?></p>
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
@@ -179,9 +176,9 @@
                         <?php foreach ($guest_trajets as $trajet): ?>
                             <tr>
                                 <td><?php echo $trajet['depart']; ?></td>
-                                <td><?php echo $trajet['depart_date']; ?></td>
+                                <td><?= date('d/m/Y', strtotime($trajet['depart_date'])) ?></td>
                                 <td><?php echo $trajet['destination']; ?></td>
-                                <td><?php echo $trajet['destination_date']; ?></td>
+                                <td><?= date('d/m/Y', strtotime($trajet['destination_date'])) ?></td>
                                 <td><?php echo $trajet['places']; ?></td>
                             </tr>
                         <?php endforeach; ?>

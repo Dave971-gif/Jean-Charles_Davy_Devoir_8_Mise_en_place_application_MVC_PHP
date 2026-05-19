@@ -26,3 +26,5 @@ if (isset($_GET['action']) && $_GET['action'] === 'logout') {
 require_once __DIR__ . '/vendor/autoload.php';
 
 require_once __DIR__ . '/routeur/Router.php';
+
+?>

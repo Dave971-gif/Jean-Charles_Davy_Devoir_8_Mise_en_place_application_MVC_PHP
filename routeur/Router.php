@@ -7,9 +7,8 @@ use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\HttpFoundation\Request;
 
-use app\controller\HomeController;
-use app\controller\ActionController;
-
+use app\Controller\HomeController;
+use app\Controller\ActionController;
 
 // 1. Routes Configs
 $routes = new RouteCollection();
