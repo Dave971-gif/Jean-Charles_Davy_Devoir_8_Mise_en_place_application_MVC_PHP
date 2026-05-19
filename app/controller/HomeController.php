@@ -47,10 +47,12 @@ class HomeController {
             // If the URL contains "/check_password", we display the password verification page
             include __DIR__ . '/../../templates/check_password.php';
             exit();
-        // --- AJOUTE CE BLOC ICI ---
+
         } elseif (strpos($uri, '/password') !== false) {
+            // If the URL contains "/password", we display the password creation page
             include __DIR__ . '/../../templates/password.php';
-            exit;
+            exit();
+            
         } else {
             // Otherwise, we display the home page with the appropriate data based on the user's role
             include __DIR__ . '/../../templates/home.php';

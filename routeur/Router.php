@@ -7,8 +7,9 @@ use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\HttpFoundation\Request;
 
-use app\Controller\HomeController;
-use app\Controller\ActionController;
+use app\controller\HomeController;
+use app\controller\ActionController;
+use app\controller\PassController;
 
 // 1. Routes Configs
 $routes = new RouteCollection();
@@ -16,8 +17,9 @@ $routes = new RouteCollection();
 // Display routes
 $routes->add('home', new Route('/', ['_controller' => [HomeController::class, 'index']]));
 $routes->add('login', new Route('/login', ['_controller' => [HomeController::class, 'index']]));
-$routes->add('check_password', new Route('/check_password', ['_controller' => [HomeController::class, 'index']]));
-$routes->add('password', new Route('/password', ['_controller' => [HomeController::class, 'index']]));
+
+$routes->add('check_password', new Route('/check_password', ['_controller' => [PassController::class, 'checkPassword']]));
+$routes->add('password', new Route('/password', ['_controller' => [PassController::class, 'createPassword']]));
 
 // Action routes for agencies and journeys (create, edit, delete)
 $routes->add('create_agency', new Route('/agency/create', ['_controller' => [ActionController::class, 'createAgency']]));

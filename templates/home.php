@@ -32,14 +32,18 @@
 
             <h3 id="agences">Gestion des Agences</h3>
 
-            <a href="./agence">Créer une nouvelle agence</a>
+            <a href="/agency/create">Créer une nouvelle agence</a>
             <ul>
                 <?php if (isset($agences) && !empty($agences)): ?>
                     <?php foreach ($agences as $agence): ?>
                         <li>
                             <?php echo $agence['nom']; ?> - 
-                            <a href="./agence/edit?id=<?php echo $agence['id']; ?>" class="ms-2 text-warning"><i class="bi bi-pencil-square"></i></a> 
-                            <a href="./agence/delete?id=<?php echo $agence['id']; ?>" class="ms-2 text-danger"><i class="bi bi-trash"></i></a>
+                            <a href="/agency/<?= $agence['id'] ?>/edit" class="ms-2 text-warning">
+                                <i class="bi bi-pencil-square"></i>
+                            </a> 
+                            <a href="/agency/<?= $agence['id'] ?>/delete" class="ms-2 text-danger">
+                                <i class="bi bi-trash"></i>
+                            </a>
                         </li>
                     <?php endforeach; ?>
                 <?php endif; ?>
@@ -47,19 +51,19 @@
             
             <h3 id="trajets">Gestion des Trajets</h3>
 
-            <?php if (isset($admin_trajets) && !empty($admin_trajets)): ?>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Agence de départ</th>
-                            <th>Date de départ</th>
-                            <th>Agence d'arrivée</th>
-                            <th>Date d'arrivée</th>
-                            <th>Places disponibles</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Agence de départ</th>
+                        <th>Date de départ</th>
+                        <th>Agence d'arrivée</th>
+                        <th>Date d'arrivée</th>
+                        <th>Places disponibles</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if (isset($admin_trajets) && !empty($admin_trajets)): ?>
                         <?php foreach ($admin_trajets as $trajet): ?>
                             <tr>
                                 <td><?php echo $trajet['depart']; ?> </td>
@@ -68,16 +72,18 @@
                                 <td><?= date('d/m/Y', strtotime($trajet['destination_date'])) ?></td>
                                 <td><?php echo $trajet['places']; ?> </td>
                                 <td>
-                                    <a href="./delete_journey?id=<?= $trajet['id'] ?>" class="ms-2 text-danger"
+                                    <a href="/journey/<?= $trajet['id'] ?>/delete" class="ms-2 text-danger"
                                     onclick="return confirm('Supprimer ce trajet ?')">
-                                            <i class="bi bi-trash"></i>
+                                        <i class="bi bi-trash"></i>
                                     </a>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
-                    </tbody>
-                </table>
-            <?php endif; ?>
+                    <?php else: ?>
+                        <tr><td colspan="6">Aucun trajet enregistré pour le moment.</td></tr>
+                    <?php endif; ?>
+                </tbody>
+            </table>
 
             <!-- ---------- USER ----------- -->
         <?php elseif (isset($role) && $role === 'user'): ?>
@@ -112,10 +118,10 @@
                                     // Verifying if the user is the owner of the journey 
                                     if ((int)$_SESSION['user_id'] === (int)$trajet['user_id']): 
                                     ?>
-                                        <a href="journey/<?= $trajet['id'] ?>/edit" class="ms-2 text-warning">
+                                        <a href="/journey/<?= $trajet['id'] ?>/edit" class="ms-2 text-warning">
                                             <i class="bi bi-pencil-square"></i>
                                         </a>
-                                        <a href="journey/<?= $trajet['id'] ?>/delete" class="ms-2 text-danger" 
+                                        <a href="/journey/<?= $trajet['id'] ?>/delete" class="ms-2 text-danger" 
                                         onclick="return confirm('Supprimer ce trajet ?')">
                                             <i class="bi bi-trash"></i>
                                         </a>

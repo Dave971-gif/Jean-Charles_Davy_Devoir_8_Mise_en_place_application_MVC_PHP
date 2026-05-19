@@ -21,18 +21,37 @@ class ActionController {
     // ==========================================
 
     public function createAgency() {
+        $error = null;
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $nom = $_POST['nom'] ?? '';
-            
+            // Cleaning the input
+            $nom = trim($_POST['nom'] ?? '');
+
             if (!empty($nom)) {
-                $stmt = $this->db->prepare("INSERT INTO agencies (nom) VALUES (:nom)");
-                $stmt->execute(['nom' => $nom]);
-                
-                $_SESSION['flash'] = "L'agence a été créée avec succès !";
-                header('Location: ./');
-                exit;
+                // Verifying if an agency with the same name already exists (case-insensitive)
+                $checkStmt = $this->db->prepare("SELECT COUNT(*) FROM agencies WHERE LOWER(nom) = LOWER(:nom)");
+                $checkStmt->execute(['nom' => $nom]);
+                $agencyExists = $checkStmt->fetchColumn();
+
+                if ($agencyExists > 0) {
+                    // If agency with the same name already exists, we set an error message to display in the view
+                    $error = "Impossible d'ajouter cette agence : la ville '$nom' existe déjà !";
+
+                } else {
+                    if (!empty($nom)) {
+                        $stmt = $this->db->prepare("INSERT INTO agencies (nom) VALUES (:nom)");
+                        $stmt->execute(['nom' => $nom]);
+
+                        $_SESSION['flash'] = "L'agence a été créée avec succès !";
+                        header('Location: /');
+                        exit;
+                    }
+                }
             }
         }
+        
+        $stmt = $this->db->query("SELECT * FROM agencies");
+        $agences = $stmt->fetchAll();
 
         // If GET : we display the creation form
         include __DIR__ . '/../../templates/agence.php';
@@ -60,7 +79,7 @@ class ActionController {
 
         if (!$agence) {
             $_SESSION['flash'] = "Agence introuvable.";
-            header('Location: ./');
+            header('Location: /');
             exit;
         }
 

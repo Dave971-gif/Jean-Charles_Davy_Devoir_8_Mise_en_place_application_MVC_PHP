@@ -30,12 +30,12 @@
                     <p class="mb-0">Bonjour, <?php echo $_SESSION['prenom'] ?? 'Administrateur'; ?> !</p>
                 
                 <?php elseif (isset($role) && $role === 'user'): ?>
-                    <h1><a href="./">Touche pas au klaxon</a></h1>
+                    <h1><a href="/">Touche pas au klaxon</a></h1>
                     <a href="./journey/create" class="btn">Créer un trajet</a>
                     <p class="mb-0">Bonjour, <?php echo $_SESSION['prenom'] ?? 'Utilisateur'; ?>!</p>
                 
                 <?php else : ?> 
-                    <h1><a href="./">Touche pas au klaxon</a></h1>
+                    <h1><a href="/">Touche pas au klaxon</a></h1>
                 <?php endif; ?>
 
                 <?php if(isset($_SESSION['role'])): ?>

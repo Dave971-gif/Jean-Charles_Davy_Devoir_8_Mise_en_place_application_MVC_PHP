@@ -1,4 +1,5 @@
 <?php include 'header.php'; ?>
+
 <?php
 if (!isset($now)) {
     $now = date('Y-m-d');
@@ -61,4 +62,5 @@ if (inputDepart.value) {
     inputArrivee.min = inputDepart.value;
 }
 </script>
+
 <?php include 'footer.php'; ?>
