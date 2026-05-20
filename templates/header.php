@@ -27,12 +27,12 @@
                     <a href="./#utilisateurs" class="btn">Utilisateurs</a>
                     <a href="./#agences" class="btn">Agences</a>
                     <a href="./#trajets" class="btn">Trajets</a>
-                    <p class="mb-0">Bonjour, <?php echo $_SESSION['prenom'] ?? 'Administrateur'; ?> !</p>
+                    <p class="mb-0">Bonjour, <?php echo $_SESSION['prenom'] . ' ' . $_SESSION['nom'] ?? 'Administrateur'; ?> !</p>
                 
                 <?php elseif (isset($role) && $role === 'user'): ?>
                     <h1><a href="/">Touche pas au klaxon</a></h1>
                     <a href="./journey/create" class="btn">Créer un trajet</a>
-                    <p class="mb-0">Bonjour, <?php echo $_SESSION['prenom'] ?? 'Utilisateur'; ?>!</p>
+                    <p class="mb-0">Bonjour, <?php echo $_SESSION['prenom'] . ' ' . $_SESSION['nom'] ?? 'Utilisateur'; ?>!</p>
                 
                 <?php else : ?> 
                     <h1><a href="/">Touche pas au klaxon</a></h1>

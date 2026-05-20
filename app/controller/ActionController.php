@@ -143,6 +143,14 @@ class ActionController {
 
         $id = null;
         $trajet = null;
+        $user = null;
+
+        if (isset($_SESSION['user_id'])) {
+            $userStmt = $this->db->prepare("SELECT * FROM users WHERE id = :id");
+            $userStmt->execute(['id' => $_SESSION['user_id']]);
+            $user = $userStmt->fetch(PDO::FETCH_ASSOC);
+        }
+
         include __DIR__ . '/../../templates/journey.php';
         exit;
     }
@@ -201,6 +209,14 @@ class ActionController {
             exit();
         }
 
+        $user = null;
+        
+        if (isset($_SESSION['user_id'])) {
+            $userStmt = $this->db->prepare("SELECT * FROM users WHERE id = :id");
+            $userStmt->execute(['id' => $_SESSION['user_id']]);
+            $user = $userStmt->fetch(PDO::FETCH_ASSOC);
+        }
+    
         include __DIR__ . '/../../templates/journey.php';
         exit;
     }

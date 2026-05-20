@@ -41,7 +41,8 @@
                             <a href="/agency/<?= $agence['id'] ?>/edit" class="ms-2 text-warning">
                                 <i class="bi bi-pencil-square"></i>
                             </a> 
-                            <a href="/agency/<?= $agence['id'] ?>/delete" class="ms-2 text-danger">
+                            <a href="/agency/<?= $agence['id'] ?>/delete" class="ms-2 text-danger" 
+                            onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette agence ?')">
                                 <i class="bi bi-trash"></i>
                             </a>
                         </li>

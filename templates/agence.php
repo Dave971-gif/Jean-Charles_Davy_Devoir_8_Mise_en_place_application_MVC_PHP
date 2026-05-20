@@ -13,7 +13,7 @@
         <!-- ---------- ADMIN ----------- -->
         <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
            <h2><?= isset($agence) ? 'Modifier l\'agence' . ' de ' . $agence['nom'] : 'Créer l\'agence' ?></h2>
-            <form method="POST" action="/agency/create">
+            <form method="POST" action="<?php echo (isset($agence) && is_array($agence)) ? '/agency/' . $agence['id'] . '/edit' : '/agency/create'; ?>">
                 <div class="mb-3">
                     <label for="nom" class="form-label">Nom de l'agence</label>
                     <input type="text" class="form-control" id="nom" name="nom" required>
@@ -27,7 +27,6 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th>ID</th>
                         <th>Nom</th>
                         <th>Actions</th>
                     </tr>
@@ -36,7 +35,6 @@
                     <?php if (isset($agences) && !empty($agences)): ?>
                         <?php foreach ($agences as $agence): ?>
                             <tr>
-                                <td><?= htmlspecialchars($agence['id']) ?></td>
                                 <td><?= htmlspecialchars($agence['nom']) ?></td>
                                 <td>
                                     <a href="/agency/<?= $agence['id'] ?>/edit" class="btn btn-sm btn-primary">
