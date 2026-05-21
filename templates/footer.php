@@ -1,5 +1,5 @@
     <footer> 
-        &copy; 2024 - CENEF - MVC PHP
+        <p>Touche pas au Klaxon ! - &copy; 2024 - CEF - MVC PHP</p>
     </footer>
 </body>
 </html>

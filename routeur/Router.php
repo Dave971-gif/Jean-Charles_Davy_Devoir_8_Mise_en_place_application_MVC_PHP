@@ -16,8 +16,8 @@ $routes = new RouteCollection();
 
 // Display routes
 $routes->add('home', new Route('/', ['_controller' => [HomeController::class, 'index']]));
-$routes->add('login', new Route('/login', ['_controller' => [HomeController::class, 'index']]));
 
+$routes->add('login', new Route('/login', ['_controller' => [PassController::class, 'login']]));
 $routes->add('check_password', new Route('/check_password', ['_controller' => [PassController::class, 'checkPassword']]));
 $routes->add('password', new Route('/password', ['_controller' => [PassController::class, 'createPassword']]));
 

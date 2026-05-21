@@ -8,7 +8,7 @@
             <h3 id="utilisateurs">Liste des Utilisateurs</h3>
 
             <?php if (isset($users) && !empty($users)): ?>
-                <table>
+                <table class="table table-striped">
                     <thead>
                         <tr>
                             <th>Nom</th>
@@ -32,27 +32,37 @@
 
             <h3 id="agences">Gestion des Agences</h3>
 
-            <a href="/agency/create">Créer une nouvelle agence</a>
-            <ul>
-                <?php if (isset($agences) && !empty($agences)): ?>
-                    <?php foreach ($agences as $agence): ?>
-                        <li>
-                            <?php echo $agence['nom']; ?> - 
-                            <a href="/agency/<?= $agence['id'] ?>/edit" class="ms-2 text-warning">
-                                <i class="bi bi-pencil-square"></i>
-                            </a> 
-                            <a href="/agency/<?= $agence['id'] ?>/delete" class="ms-2 text-danger" 
-                            onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette agence ?')">
-                                <i class="bi bi-trash"></i>
-                            </a>
-                        </li>
-                    <?php endforeach; ?>
-                <?php endif; ?>
-            </ul>
+            <a href="/agency/create" class="btn btn-primary">Créer une nouvelle agence</a>
+            <table class="table table-striped mt-3">
+                <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if (isset($agences) && !empty($agences)): ?>
+                        <?php foreach ($agences as $agence): ?>
+                            <tr>
+                                <td><?php echo $agence['nom']; ?></td>
+                                <td>
+                                    <a href="/agency/<?= $agence['id'] ?>/edit" class="btn btn-sm btn-primary">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </a>
+                                    <a href="/agency/<?= $agence['id'] ?>/delete" class="btn btn-sm btn-danger"
+                                        onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette agence ?')">
+                                        <i class="bi bi-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                </tbody>
+            </table>
             
             <h3 id="trajets">Gestion des Trajets</h3>
 
-            <table>
+            <table class="table table-striped">
                 <thead>
                     <tr>
                         <th>Agence de départ</th>
@@ -90,7 +100,7 @@
         <?php elseif (isset($role) && $role === 'user'): ?>
             <h2>Bienvenue sur votre tableau de bord</h2>
             <p>Voici les trajets disponibles pour vous :</p>
-            <table>
+            <table class="table table-striped">
                 <thead>
                     <tr>
                         <th>Agence de départ</th>
@@ -168,7 +178,7 @@
             <h3>Voici la liste des trajets disponibles :</h3>
 
             <p>Pour obtenir plus d'informations sur un trajet, veuillez vous connecter.</p>
-            <table>
+            <table class="table table-striped">
                 <thead>
                     <tr>
                         <th>Agence de départ</th>

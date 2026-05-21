@@ -116,7 +116,11 @@ class ActionController {
             $places = $_POST['places'] ?? 1;
             $user_id = $_SESSION['user_id'] ?? null;
 
-            if (strtotime($depart_date) < time()) {
+            if ($depart === $destination) {
+                die("Erreur : La ville de départ et la destination ne peuvent pas être identiques.");
+            }
+
+            if (strtotime($depart_date) < strtotime('today')) {
                 die("Erreur : La date de départ ne peut pas être dans le passé.");
             }
             
@@ -125,7 +129,9 @@ class ActionController {
             }
             
             if (!empty($depart) && !empty($destination)) {
-                $stmt = $this->db->prepare("INSERT INTO journey (depart, depart_date, destination, destination_date, places, user_id) VALUES (:depart, :depart_date, :destination, :destination_date, :places, :user_id)");
+                $stmt = $this->db->prepare("INSERT INTO journey (depart, depart_date, destination, destination_date, places, user_id) 
+                VALUES (:depart, :depart_date, :destination, :destination_date, :places, :user_id)");
+                
                 $stmt->execute([
                     'depart' => $depart,
                     'depart_date' => $depart_date,
@@ -143,6 +149,10 @@ class ActionController {
 
         $id = null;
         $trajet = null;
+        
+        $agencyStmt = $this->db->query("SELECT * FROM agencies ORDER BY nom ASC");
+        $agences = $agencyStmt->fetchAll(PDO::FETCH_ASSOC);
+
         $user = null;
 
         if (isset($_SESSION['user_id'])) {
@@ -168,7 +178,11 @@ class ActionController {
             $destination_date = $_POST['destination_date'] ?? '';
             $places = $_POST['places'] ?? 1;
 
-            if (strtotime($depart_date) < time()) {
+            if ($depart === $destination) {
+                die("Erreur : La ville de départ et la destination ne peuvent pas être identiques.");
+            }
+
+            if (strtotime($depart_date) < strtotime('today')) {
             die("Erreur : La date de départ ne peut pas être dans le passé.");
             }
 
@@ -176,7 +190,8 @@ class ActionController {
                 die("Erreur : La date d'arrivée ne peut pas être antérieure à la date de départ.");
             }
 
-            $stmt = $this->db->prepare("UPDATE journey SET depart = :depart, depart_date = :depart_date, destination = :destination, destination_date = :destination_date, places = :places WHERE id = :id");
+            $stmt = $this->db->prepare("UPDATE journey SET depart = :depart, depart_date = :depart_date, destination = :destination, destination_date = :destination_date, places = :places 
+            WHERE id = :id");
             $stmt->execute([
                 'depart' => $depart,
                 'depart_date' => $depart_date,
@@ -192,7 +207,7 @@ class ActionController {
         }
 
         // If GET request, we fetch the existing journey data to pre-fill the form
-        $stmt = $this->db->prepare("SELECT * FROM journey WHERE id = :id");
+        $stmt = $this->db->prepare("SELECT * FROM journey WHERE id = :id ORDER BY depart_date ASC, depart ASC");
         $stmt->execute(['id' => $id]);
         $trajet = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -208,6 +223,9 @@ class ActionController {
             header('Location: /');
             exit();
         }
+
+        $agencyStmt = $this->db->query("SELECT * FROM agencies ORDER BY nom ASC");
+        $agences = $agencyStmt->fetchAll(PDO::FETCH_ASSOC);
 
         $user = null;
         

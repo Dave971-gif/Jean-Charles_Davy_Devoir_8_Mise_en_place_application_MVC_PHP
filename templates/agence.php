@@ -15,7 +15,7 @@
            <h2><?= isset($agence) ? 'Modifier l\'agence' . ' de ' . $agence['nom'] : 'Créer l\'agence' ?></h2>
             <form method="POST" action="<?php echo (isset($agence) && is_array($agence)) ? '/agency/' . $agence['id'] . '/edit' : '/agency/create'; ?>">
                 <div class="mb-3">
-                    <label for="nom" class="form-label">Nom de l'agence</label>
+                    <label for="nom" class="form-label"><strong>Nom de l'agence</strong></label>
                     <input type="text" class="form-control" id="nom" name="nom" required>
                 </div>
                 <button type="submit" class="btn btn-primary">

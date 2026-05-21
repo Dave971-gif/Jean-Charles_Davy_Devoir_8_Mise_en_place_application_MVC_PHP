@@ -7,6 +7,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script> 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="/public/style/style.css">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
 </head>
 <body>
 
@@ -20,22 +22,22 @@
     <?php endif; ?>
     
     <header>
-        <nav class="navbar navbar-expand-lg bg-light p-3">
+        <nav class="navbar navbar-expand-lg p-3 bar-nav rounded-3">
             <div class="container-fluid">
                 <?php if (isset($role) && $role === 'admin'): ?>
-                    <h1><a href="./">Touche pas au klaxon</a></h1>
-                    <a href="./#utilisateurs" class="btn">Utilisateurs</a>
-                    <a href="./#agences" class="btn">Agences</a>
-                    <a href="./#trajets" class="btn">Trajets</a>
+                    <h1><a href="./" class="text-white text-decoration-none">Touche pas au klaxon</a></h1>
+                    <a href="./#utilisateurs" class="btn btn-secondary">Utilisateurs</a>
+                    <a href="./#agences" class="btn btn-secondary">Agences</a>
+                    <a href="./#trajets" class="btn btn-secondary">Trajets</a>
                     <p class="mb-0">Bonjour, <?php echo $_SESSION['prenom'] . ' ' . $_SESSION['nom'] ?? 'Administrateur'; ?> !</p>
                 
                 <?php elseif (isset($role) && $role === 'user'): ?>
-                    <h1><a href="/">Touche pas au klaxon</a></h1>
-                    <a href="./journey/create" class="btn">Créer un trajet</a>
+                    <h1><a href="/" class="text-white text-decoration-none">Touche pas au klaxon</a></h1>
+                    <a href="./journey/create" class="btn btn-secondary">Créer un trajet</a>
                     <p class="mb-0">Bonjour, <?php echo $_SESSION['prenom'] . ' ' . $_SESSION['nom'] ?? 'Utilisateur'; ?>!</p>
                 
                 <?php else : ?> 
-                    <h1><a href="/">Touche pas au klaxon</a></h1>
+                    <h1><a href="/" class="text-white text-decoration-none">Touche pas au klaxon</a></h1>
                 <?php endif; ?>
 
                 <?php if(isset($_SESSION['role'])): ?>

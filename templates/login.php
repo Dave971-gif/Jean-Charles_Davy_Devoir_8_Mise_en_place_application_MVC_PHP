@@ -1,38 +1,3 @@
-<?php
-
-require_once __DIR__ . '/../core/Database.php';
-
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') { // Checking if the form is submitted
-    $email = $_POST['email'] ?? '';
-    $password = $_POST['password'] ?? '';
-
-    $db = \core\Database::getConnection();
-    
-    // Searching for the user in the database
-    $stmt = $db->prepare("SELECT * FROM users WHERE email = :email");
-    $stmt->execute(['email' => $email]);
-    $user = $stmt->fetch();
-
-    if ($user) {
-        // Storing the user information in a temporary session variable for the next step (password verification or creation)
-        $_SESSION['temp_user'] = $user;
-        
-        // Verifying if the user already has a password set (first access or not)
-        if (!empty($user['password'])) {
-            // Redirecting to the password verification page if the user already has a password (not first access)
-            header('Location: ./check_password'); 
-        } else {
-            // Redirecting to the password creation page if it's the user's first access (no password set yet)
-            header('Location: ./password');
-        }
-        exit();
-    } else {
-        $error = "Cet email n'est pas reconnu par le système RH.";
-    }
-}
-?>
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -42,6 +7,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') { // Checking if the form is submitte
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script> 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="/public/style/style.css">
+    <link rel="stylesheet" href="/public/style/login.css">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
 </head>
 <body>
     <main>

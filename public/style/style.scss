@@ -1,0 +1,41 @@
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+
+    header {
+        .bar-nav{
+            background-color: #0074C7;
+            color: #f1f8fc;
+            text-align: center;
+        }
+    }
+
+    main {
+        background-color: #f1f8fc;
+        color: #384050;
+        flex: 1;
+        padding: 2rem;
+
+        h2 {
+            color: #cd2c2e;
+        }
+
+        h3 {
+            color: #00497c;
+        }
+    }
+
+    footer {
+        background-color: #384050;
+        color: #f1f8fc;
+        text-align: center;
+        padding: 20px;
+        border-radius: 10px;
+
+        p {
+            color: #82B864;
+        }
+    }
+}

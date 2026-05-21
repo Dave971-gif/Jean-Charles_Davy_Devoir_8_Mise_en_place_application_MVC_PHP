@@ -4,6 +4,39 @@ namespace app\controller;
 
 class PassController { 
 
+    public function login(): void {
+        $error = null;
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') { // Checking if the form is submitted
+            $email = $_POST['email'] ?? '';
+            $password = $_POST['password'] ?? '';
+
+            $db = \core\Database::getConnection();
+            
+            // Searching for the user in the database
+            $stmt = $db->prepare("SELECT * FROM users WHERE email = :email");
+            $stmt->execute(['email' => $email]);
+            $user = $stmt->fetch(\PDO::FETCH_ASSOC); 
+
+            if ($user) {
+                // Storing the user information in a temporary session variable
+                $_SESSION['temp_user'] = $user;
+                
+                // Verifying if the user already has a password set
+                if (!empty($user['password'])) {
+                    header('Location: /check_password'); 
+                } else {
+                    header('Location: /password'); 
+                }
+                exit();
+            } else {
+                $error = "Cet email n'est pas reconnu par le système RH.";
+            }
+        }
+
+        include __DIR__ . '/../../templates/login.php';
+    }
+
     /**
      * Handle first-time password creation (password step)
      */

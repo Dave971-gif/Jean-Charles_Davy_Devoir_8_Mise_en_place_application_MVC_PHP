@@ -20,21 +20,33 @@ class HomeController {
 
         $sqlTrajets = "SELECT j.*, u.prenom, u.nom, u.email, u.contact 
                        FROM journey j 
-                       LEFT JOIN users u ON j.user_id = u.id";
+                       LEFT JOIN users u ON j.user_id = u.id
+                       ORDER BY j.depart_date ASC, j.depart ASC";
 
         // Fetching data based on the user's role
         if ($role === 'admin') {
             $admin_trajets = $db->query($sqlTrajets)->fetchAll();
             $users = $db->query("SELECT * FROM users")->fetchAll();
-            $agences = $db->query("SELECT * FROM agencies")->fetchAll();
+            $agences = $db->query("SELECT * FROM agencies ORDER BY nom ASC")->fetchAll();
         } 
         elseif ($role === 'user') {
             // User sees all journeys with available places, including their own (even if full)
-            $user_trajets = $db->query($sqlTrajets . " WHERE j.places > 0")->fetchAll();
+
+            $sqlUser = "SELECT j.*, u.prenom, u.nom, u.email, u.contact 
+                        FROM journey j 
+                        LEFT JOIN users u ON j.user_id = u.id 
+                        WHERE j.places > 0 
+                        ORDER BY j.depart_date ASC, j.depart ASC";
+            $user_trajets = $db->query($sqlUser)->fetchAll();
         } 
         else {
             // Visitor sees exactly the same as the logged-in user
-            $guest_trajets = $db->query($sqlTrajets . " WHERE j.places > 0")->fetchAll();
+            $sqlGuest = "SELECT j.*, u.prenom, u.nom, u.email, u.contact 
+                         FROM journey j 
+                         LEFT JOIN users u ON j.user_id = u.id 
+                         WHERE j.places > 0 
+                         ORDER BY j.depart_date ASC, j.depart ASC";
+            $guest_trajets = $db->query($sqlGuest)->fetchAll();
         }
 
         $uri = $_SERVER['REQUEST_URI'];
