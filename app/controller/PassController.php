@@ -2,6 +2,14 @@
 
 namespace app\controller;
 
+/**
+ * Class PassController
+ *
+ * Manages passes, subscriptions, or access credentials.
+ *
+ * @package app\controller
+ */
+
 class PassController { 
 
     public function login(): void {

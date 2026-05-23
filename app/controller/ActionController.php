@@ -3,7 +3,17 @@ namespace app\controller;
 
 use PDO;
 
+/**
+ * Class ActionController
+ * * Handles administrative actions for managing agencies and journeys.
+ * * @package app\controller
+ */
+
 class ActionController {
+    
+    /**
+     * @var PDO The database connection instance.
+     */
     private PDO $db;
 
     public function __construct() {
@@ -19,6 +29,12 @@ class ActionController {
     // ==========================================
     //          AGENCY ACTIONS (CRUD)
     // ==========================================
+
+    /**
+     * Create a new agency in the system.
+     * * @param string $name The name of the agency to create.
+     * @return bool True on success, false on failure.
+     */
 
     public function createAgency() {
         $error = null;
@@ -38,14 +54,13 @@ class ActionController {
                     $error = "Impossible d'ajouter cette agence : la ville '$nom' existe déjà !";
 
                 } else {
-                    if (!empty($nom)) {
-                        $stmt = $this->db->prepare("INSERT INTO agencies (nom) VALUES (:nom)");
-                        $stmt->execute(['nom' => $nom]);
-
-                        $_SESSION['flash'] = "L'agence a été créée avec succès !";
-                        header('Location: /');
-                        exit;
-                    }
+                    $stmt = $this->db->prepare("INSERT INTO agencies (nom) VALUES (:nom)");
+                    $stmt->execute(['nom' => $nom]);
+                    
+                    $_SESSION['flash'] = "L'agence a été créée avec succès !";
+                    
+                    header('Location: /');
+                    exit;
                 }
             }
         }
@@ -87,6 +102,11 @@ class ActionController {
         exit;
     }
 
+    /**
+     * Delete an agency by its unique identifier.
+     * * @param int $id The ID of the agency to delete.
+     * @return bool True on success, false on failure.
+     */
     public function deleteAgency(int $id) {
         $stmt = $this->db->prepare("DELETE FROM agencies WHERE id = :id");
         $stmt->execute(['id' => $id]);
@@ -100,6 +120,11 @@ class ActionController {
     // ==========================================
     //          JOURNEY ACTIONS (CRUD)
     // ==========================================
+
+    /**
+     * Create a new journey in the system.
+     * * @param string $name The name of the journey to create.
+     */
 
     public function createJourney(): void {
         if (!isset($_SESSION['user_id'])) {
@@ -239,6 +264,10 @@ class ActionController {
         exit;
     }
 
+    /**
+     * Delete a journey by its unique identifier.
+     * * @param int $id The ID of the journey to delete.
+     */
     public function deleteJourney(int $id): void {
         $stmt = $this->db->prepare("DELETE FROM journey WHERE id = :id");
         $stmt->execute(['id' => $id]);

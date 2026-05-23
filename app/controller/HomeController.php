@@ -4,9 +4,22 @@ namespace app\controller;
 
 use core\Database;
 
-class HomeController {
+/**
+ * Class HomeController
+ *
+ * Handles the main landing page and public home views.
+ *
+ * @package app\controller
+ */
 
-    public function index() {
+class HomeController {
+    /**
+     * Display the home page with different data based on the user's role (admin, user, visitor).
+     * or redirects to the authentication/password pages.
+     *
+     * @return void
+     */
+    public function index(): void {
         // Initialising the visitor's role, defaulting to 'visitor' if not set
         $role = $_SESSION['role'] ?? 'visitor';
         $db = Database::getConnection(); // Connection to database
